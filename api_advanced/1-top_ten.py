@@ -2,18 +2,33 @@
 """
 Module: 1-top_ten
 
-Defines a function that fetches and prints the titles of the first 10 hot posts
-from a given subreddit using Reddit's public API.
+Description:
+    Provides the function `top_ten(subreddit)` which queries the Reddit API to
+    fetch and print the titles of the top 10 hot posts for a given subreddit.
 
-Requirements:
-- Do not follow redirects (to detect invalid subreddits).
-- Print None if subreddit is invalid or inaccessible.
+    The function:
+    - Prints the titles of the posts.
+    - Prints 'None' if the subreddit is invalid or inaccessible.
+    - Does not follow HTTP redirects to avoid false positives on invalid subreddits.
 
 Usage:
-    $ python3 1-main.py <subreddit>
+    Run the script by passing a subreddit name as a command-line argument:
 
-Author: Your Name
-Date: 2025-07-08
+        $ python3 1-main.py <subreddit>
+
+Example:
+    $ python3 1-main.py programming
+
+Requirements:
+    - Internet connection.
+    - The `requests` Python library installed.
+    - Respect Reddit API rules by providing a User-Agent.
+
+Author:
+    Your Name
+
+Date:
+    2025-07-08
 """
 
 import requests
@@ -21,22 +36,30 @@ import requests
 
 def top_ten(subreddit):
     """
-    Queries the Reddit API and prints the titles of the first 10 hot posts
-    listed for the given subreddit.
+    Queries Reddit's API to retrieve and print the titles of the first 10 hot posts
+    from the specified subreddit.
 
-    If the subreddit is invalid or inaccessible, prints None.
+    The function makes an HTTP GET request to Reddit’s public JSON API endpoint for
+    the subreddit’s hot posts, limiting the results to 10 posts.
+
+    If the subreddit does not exist, is private, or is otherwise inaccessible,
+    the function prints 'None' instead.
+
+    Redirects are not followed to avoid treating Reddit’s search redirect pages as valid subreddits.
 
     Args:
-        subreddit (str): The name of the subreddit to query.
+        subreddit (str): Name of the subreddit to query.
+
+    Returns:
+        None: Prints output directly.
     """
     headers = {'User-Agent': 'Mozilla/5.0 (compatible; alu-scripting/1.0)'}
     url = f'https://www.reddit.com/r/{subreddit}/hot.json?limit=10'
 
     try:
-        # Don't follow redirects; invalid subreddit returns a 302 redirect to search page
+        # Prevent following redirects (invalid subreddit returns 302 redirect)
         response = requests.get(url, headers=headers, allow_redirects=False)
 
-        # If not status code 200, subreddit invalid or inaccessible
         if response.status_code != 200:
             print("None")
             return
@@ -50,5 +73,4 @@ def top_ten(subreddit):
                 print(title)
 
     except (requests.RequestException, ValueError):
-        # Catch network errors or JSON parsing errors
         print("None")
