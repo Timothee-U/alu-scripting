@@ -1,7 +1,28 @@
 #!/usr/bin/python3
-'''
-    This module contains the function top_ten
-'''
+"""
+Reddit Top Ten Hot Posts Fetcher
+
+This module defines a function `top_ten(subreddit)` that connects to the Reddit API
+and prints the titles of the top 10 hot posts for a given subreddit.
+
+It uses the public Reddit JSON API (no authentication), and includes error handling
+for invalid or inaccessible subreddits.
+
+Usage:
+    $ ./1-top_ten.py <subreddit_name>
+
+Example:
+    $ ./1-top_ten.py python
+
+Dependencies:
+    - requests
+
+Author:
+    Timothée Habarugaba Uwayesu
+
+Date:
+    July 2025
+"""
 import requests
 from sys import argv
 
