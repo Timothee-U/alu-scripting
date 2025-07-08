@@ -10,7 +10,7 @@ def top_ten(subreddit):
     '''
         returns the top ten posts for a given subreddit
     '''
-    user = {'User-Agent': 'Lizzie'}
+    user = {'User-Agent': 'Sidekick'}
     url = requests.get('https://www.reddit.com/r/{}/hot/.json?limit=10'
                        .format(subreddit), headers=user).json()
     try:
