@@ -1,29 +1,21 @@
 #!/usr/bin/python3
-"""
-Reddit API Interaction Module
-
-This module provides functions to interact with the Reddit API:
-
-- top_ten(subreddit): prints the top 10 hot post titles of a subreddit.
-- get_user_info(username): prints basic information about a Reddit user.
-
-Usage:
-    Run as a script:
-        python3 script.py top_ten <subreddit>
-        python3 script.py user_info <username>
-
-Dependencies:
-    requests library for HTTP requests.
-"""
+'''
+This module contains the function top_ten
+'''
 
 import requests
-import sys
 
 
 def top_ten(subreddit):
-    """
-    Prints the titles of the top ten hot posts for a given subreddit.
-    """
+    '''
+    Queries the Reddit API and prints the titles of the first 10 hot posts
+    listed for a given subreddit.
+
+    If the subreddit is invalid, prints None.
+
+    Args:
+        subreddit (str): The subreddit name to query.
+    '''
     headers = {'User-Agent': 'Mozilla/5.0'}
     url = f'https://www.reddit.com/r/{subreddit}/hot.json?limit=10'
     response = requests.get(url, headers=headers, allow_redirects=False)
@@ -32,51 +24,9 @@ def top_ten(subreddit):
         print(None)
         return
 
-    data = response.json()
     try:
-        for post in data['data']['children']:
+        posts = response.json()['data']['children']
+        for post in posts:
             print(post['data']['title'])
-    except Exception:
-        print(None)
-
-
-def get_user_info(username):
-    """
-    Prints basic information about a Reddit user.
-    """
-    headers = {'User-Agent': 'Mozilla/5.0'}
-    url = f'https://www.reddit.com/user/{username}/about.json'
-    response = requests.get(url, headers=headers, allow_redirects=False)
-
-    if response.status_code != 200:
-        print(None)
-        return
-
-    data = response.json()
-    try:
-        user_data = data['data']
-        print(f"User: {user_data.get('name')}")
-        print(f"Karma: {user_data.get('total_karma')}")
-        print(f"Created (UTC timestamp): {user_data.get('created_utc')}")
-        print(f"Is Gold: {user_data.get('is_gold')}")
-    except Exception:
-        print(None)
-
-
-if __name__ == "__main__":
-
-    if len(sys.argv) < 3:
-        print("Usage:")
-        print("  To get top posts: python3 script.py top_ten <subreddit>")
-        print("  To get user info: python3 script.py user_info <username>")
-        sys.exit(1)
-
-    command = sys.argv[1]
-    argument = sys.argv[2]
-
-    if command == "top_ten":
-        top_ten(argument)
-    elif command == "user_info":
-        get_user_info(argument)
-    else:
+    except (KeyError, ValueError):
         print(None)
