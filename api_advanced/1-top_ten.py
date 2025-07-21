@@ -1,13 +1,13 @@
 #!/usr/bin/python3
-'''
+"""
 This module contains the function top_ten
-'''
+"""
 
 import requests
 
 
 def top_ten(subreddit):
-    '''
+   """
     Queries the Reddit API and prints the titles of the first 10 hot posts
     listed for a given subreddit.
 
@@ -15,7 +15,7 @@ def top_ten(subreddit):
 
     Args:
         subreddit (str): The subreddit name to query.
-    '''
+    """
     headers = {'User-Agent': 'Mozilla/5.0'}
     url = f'https://www.reddit.com/r/{subreddit}/hot.json?limit=10'
     response = requests.get(url, headers=headers, allow_redirects=False)
