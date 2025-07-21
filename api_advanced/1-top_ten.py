@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-"""Script that fetch 10 hot post for a given subreddit."""
+"""This module contains functions to interact with Reddit API:
+    - top_ten(subreddit): prints top 10 hot posts titles in a subreddit
+    - get_user_info(username): prints basic info about a Reddit user"""
 import requests
 
 
